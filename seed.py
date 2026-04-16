@@ -8,7 +8,6 @@ def seed_database():
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
     
-    cursor.execute("DELETE FROM recruitees")
     
     # Generate 10 people per cohort for cohorts 1-8
     records = []
