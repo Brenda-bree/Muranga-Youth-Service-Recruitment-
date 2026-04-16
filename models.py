@@ -33,6 +33,7 @@ def init_database():
     
     print("Database table 'recruitees' created with fields: name, id_number, gender, size, phone_number, cohort_number")
 
+
 def load_cohort_data():
     """
     Loads all 8 cohorts of existing recruitees into the database.
@@ -41,7 +42,12 @@ def load_cohort_data():
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    # Data loading to go her
+    # Insert a record into the database
+    cursor.execute('''
+        INSERT OR IGNORE INTO recruitees 
+        (id_number, name, gender, size, phone_number, cohort_number)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ''', ('placeholder', 'placeholder', 'placeholder', 'placeholder', 'placeholder', 0))
     
     conn.commit()
     conn.close()
