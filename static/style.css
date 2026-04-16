@@ -8,9 +8,6 @@ body {
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .container {
@@ -308,9 +305,217 @@ button:hover {
     word-break: break-word;
 }
 
-/* Add subtle icons per field using pseudo-elements */
 .detail-item:nth-child(1) .detail-label::before { content: "👤 "; font-weight: normal; }
 .detail-item:nth-child(2) .detail-label::before { content: "⚧ "; font-weight: normal; }
 .detail-item:nth-child(3) .detail-label::before { content: "📏 "; font-weight: normal; }
 .detail-item:nth-child(4) .detail-label::before { content: "📞 "; font-weight: normal; }
 .detail-item:nth-child(5) .detail-label::before { content: "📌 "; font-weight: normal; }
+
+
+
+@media screen and (max-width: 480px) {
+    .header-container {
+        padding: 0.6rem 1rem;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .logo-area {
+        gap: 8px;
+    }
+    
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+    
+    .logo-title {
+        font-size: 0.9rem;
+    }
+    
+    .logo-subtitle {
+        font-size: 0.6rem;
+    }
+    
+    .user-name {
+        display: none;
+    }
+    
+    .user-profile {
+        padding: 6px 12px;
+    }
+    
+    .user-profile i:first-child {
+        font-size: 1.5rem;
+    }
+    
+    .main-wrapper {
+        padding: 1rem;
+        min-height: calc(100vh - 60px);
+    }
+    
+    .container {
+        width: 100%;
+        padding: 1.2rem;
+        border-radius: 20px;
+    }
+    
+    .container h1 {
+        font-size: 1.4rem;
+    }
+    
+    .container p {
+        font-size: 0.85rem;
+    }
+    
+    input {
+        width: 100%;
+        font-size: 14px;
+        padding: 12px;
+    }
+    
+    button {
+        width: 100%;
+        padding: 12px;
+        font-size: 14px;
+    }
+    
+    .details-card h3 {
+        font-size: 1rem;
+        padding: 12px 16px;
+    }
+    
+    .detail-item {
+        flex-direction: column;
+        padding: 10px 16px;
+    }
+    
+    .detail-label {
+        flex: auto;
+        margin-bottom: 4px;
+        font-size: 0.7rem;
+    }
+    
+    .detail-value {
+        font-size: 0.85rem;
+    }
+    
+    .dropdown-menu {
+        width: 160px;
+        right: -10px;
+    }
+}
+
+/* Tablet devices */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .header-container {
+        padding: 0.7rem 1.5rem;
+    }
+    
+    .main-wrapper {
+        padding: 1.5rem;
+    }
+    
+    .container {
+        width: 90%;
+        max-width: 500px;
+        padding: 1.5rem;
+    }
+    
+    input, button {
+        font-size: 15px;
+    }
+    
+    .details-grid {
+        gap: 8px;
+    }
+    
+    .detail-label {
+        flex: 0 0 110px;
+        font-size: 0.8rem;
+    }
+    
+    .dropdown-menu {
+        width: 170px;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1200px) {
+    .header-container {
+        max-width: 1100px;
+    }
+    
+    .container {
+        width: 550px;
+    }
+}
+
+/* Large screens (1201px and above) */
+@media screen and (min-width: 1201px) {
+    .header-container {
+        max-width: 1600px;
+        padding: 1rem 3rem;
+    }
+    
+    .main-wrapper {
+        padding: 3rem;
+    }
+    
+    .container {
+        width: 650px;
+        padding: 2.5rem;
+    }
+    
+    .container h1 {
+        font-size: 2rem;
+    }
+    
+    .container p {
+        font-size: 1rem;
+    }
+    
+    input, button {
+        font-size: 1rem;
+    }
+    
+    .details-card h3 {
+        font-size: 1.4rem;
+    }
+    
+    .detail-label {
+        flex: 0 0 140px;
+        font-size: 0.9rem;
+    }
+    
+    .detail-value {
+        font-size: 1rem;
+    }
+}
+
+/* Landscape orientation for mobile */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    .main-wrapper {
+        min-height: auto;
+        padding: 1rem;
+    }
+    
+    .container {
+        padding: 1rem;
+    }
+    
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px 12px;
+    }
+    
+    .detail-item {
+        flex-direction: row;
+        padding: 6px 12px;
+    }
+    
+    .detail-label {
+        flex: 0 0 100px;
+    }
+}
