@@ -418,84 +418,102 @@ button:hover {
     to { width: 100%; }
 }
 
+/* ===== ELEGANT DETAILS CARD ===== */
 .details-card {
-    margin-top: 25px;
+    margin-top: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
+    border-radius: 28px;
     padding: 0;
-    background: linear-gradient(135deg, #fff 0%, #fef5f5 100%);
-    border-radius: 20px;
-    box-shadow: 0 20px 35px -10px rgba(114, 28, 36, 0.2);
-    border-left: 6px solid #dc3545;
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+    perspective: 800px;
 }
 
 .details-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 25px 40px -12px rgba(114, 28, 36, 0.3);
+    transform: translateY(-5px) rotateX(2deg);
+    box-shadow: 0 25px 40px rgba(0,0,0,0.4);
 }
 
 .details-card h3 {
     margin: 0;
     padding: 18px 24px;
-    background: rgba(220, 53, 69, 0.08);
-    color: #721c24;
-    font-size: 1.3rem;
-    font-weight: 600;
-    border-bottom: 1px solid rgba(220, 53, 69, 0.2);
-    letter-spacing: -0.2px;
+    background: rgba(245,101,101,0.2);
+    font-size: 1.2rem;
+    color: #f56565;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .details-card h3::before {
-    content: "⚠️ ";
+    content: "⚠️";
+    font-size: 1.5rem;
+}
+
+/* Avatar row */
+.details-card h3::after {
+    content: "👤";
+    margin-left: auto;
     font-size: 1.3rem;
+    background: rgba(255,255,255,0.1);
+    padding: 5px 10px;
+    border-radius: 40px;
 }
 
 .details-grid {
     display: flex;
     flex-direction: column;
-    gap: 0;
     padding: 8px 0;
 }
 
 .detail-item {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     padding: 12px 24px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    transition: background 0.15s;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.2s;
 }
 
 .detail-item:hover {
-    background: rgba(220, 53, 69, 0.03);
-}
-
-.detail-item:last-child {
-    border-bottom: none;
+    background: rgba(255,255,255,0.05);
 }
 
 .detail-label {
     flex: 0 0 130px;
-    font-weight: 700;
-    color: #5a2a2e;
-    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .detail-value {
     flex: 1;
-    color: #1a1a1a;
-    font-size: 1rem;
+    color: white;
     font-weight: 500;
-    word-break: break-word;
+    font-size: 0.95rem;
 }
 
-.detail-item:nth-child(1) .detail-label::before { content: "👤 "; font-weight: normal; }
-.detail-item:nth-child(2) .detail-label::before { content: "⚧ "; font-weight: normal; }
-.detail-item:nth-child(3) .detail-label::before { content: "📏 "; font-weight: normal; }
-.detail-item:nth-child(4) .detail-label::before { content: "📞 "; font-weight: normal; }
-.detail-item:nth-child(5) .detail-label::before { content: "📌 "; font-weight: normal; }
+/* Badge for cohort */
+.detail-item:last-child .detail-value {
+    background: rgba(245,101,101,0.3);
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 40px;
+    width: auto;
+    font-weight: bold;
+}
 
+/* Add icons to labels */
+.detail-item:nth-child(1) .detail-label::before { content: "👤 "; }
+.detail-item:nth-child(2) .detail-label::before { content: "⚧ "; }
+.detail-item:nth-child(3) .detail-label::before { content: "📏 "; }
+.detail-item:nth-child(4) .detail-label::before { content: "📞 "; }
+.detail-item:nth-child(5) .detail-label::before { content: "📌 "; }
 
 
 @media screen and (max-width: 480px) {
