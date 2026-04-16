@@ -48,6 +48,11 @@ def load_cohort_data():
         (id_number, name, gender, size, phone_number, cohort_number)
         VALUES (?, ?, ?, ?, ?, ?)
     ''', ('placeholder', 'placeholder', 'placeholder', 'placeholder', 'placeholder', 0))
+
+        # Count how many records are in the database
+    cursor.execute('SELECT COUNT(*) as count FROM recruitees')
+    result = cursor.fetchone()
+    print(f"Total records in database: {result['count']}")
     
     conn.commit()
     conn.close()
