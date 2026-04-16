@@ -16,10 +16,38 @@
             <button type="submit">Verify</button>
         </form>
 
-        {% if result %}
+                {% if result %}
             <div class="result {{ result.status }}">
                 <h2>{{ result.status }}</h2>
                 <p>{{ result.message }}</p>
+                
+                {% if result.status == 'REJECTED' and result.details %}
+                    <div class="details-card">
+                        <h3>Registered Applicant Details</h3>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">Full Name:</span>
+                                <span class="detail-value">{{ result.details.name }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Gender:</span>
+                                <span class="detail-value">{{ result.details.gender }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Size:</span>
+                                <span class="detail-value">{{ result.details.size }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Phone Number:</span>
+                                <span class="detail-value">{{ result.details.phone }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Cohort:</span>
+                                <span class="detail-value">Cohort {{ result.details.cohort }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         {% endif %}
     </div>
