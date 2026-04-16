@@ -52,7 +52,8 @@
             <!-- Search Toggle -->
             <div class="search-toggle">
                 <label class="toggle-option">
-                    <input type="radio" name="search_type" value="id" checked> 
+                    <input type="radio" name="search_type" value="id" checked>
+                    <div id="nameSuggestions" class="suggestions-list"></div> 
                     <span>ID Number</span>
                 </label>
                 <label class="toggle-option">
@@ -171,6 +172,114 @@
             }
         });
     }
+</script>
+
+<script>
+    // Live name search with AJAX
+const searchInput = document.getElementById('searchInput');
+const suggestionsDiv = document.getElementById('nameSuggestions');
+let currentSearchType = 'id';
+
+// Update when toggle changes
+document.querySelectorAll('input[name="search_type"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        currentSearchType = this.value;
+        suggestionsDiv.innerHTML = '';
+        if (currentSearchType === 'name') {
+            searchInput.placeholder = 'Enter name (min 2 chars)';
+            searchInput.maxLength = 100;
+            searchInput.removeAttribute('pattern');
+        } else {
+            searchInput.placeholder = 'Enter ID Number (9 digits)';
+            searchInput.maxLength = 9;
+            searchInput.pattern = '\\d{9}';
+            suggestionsDiv.innerHTML = '';
+        }
+    });
+});
+
+// Debounce function to avoid too many requests
+let debounceTimer;
+searchInput.addEventListener('input', function() {
+    if (currentSearchType !== 'name') {
+        suggestionsDiv.innerHTML = '';
+        return;
+    }
+    
+    const query = this.value.trim();
+    if (query.length < 2) {
+        suggestionsDiv.innerHTML = '';
+        return;
+    }
+    
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        fetch(`/search/names?q=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    suggestionsDiv.innerHTML = '<div class="suggestion-item no-results">No matches found</div>';
+                    return;
+                }
+                let html = '';
+                data.forEach(person => {
+                    html += `<div class="suggestion-item" data-id="${person.id_number}" data-name="${person.name}" data-gender="${person.gender}" data-size="${person.size}" data-phone="${person.phone_number}" data-cohort="${person.cohort_number}">
+                                <strong>${escapeHtml(person.name)}</strong> (ID: ${person.id_number}) - Cohort ${person.cohort_number}
+                            </div>`;
+                });
+                suggestionsDiv.innerHTML = html;
+                
+                // Add click handlers
+                document.querySelectorAll('.suggestion-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const details = {
+                            name: this.dataset.name,
+                            gender: this.dataset.gender,
+                            size: this.dataset.size,
+                            phone: this.dataset.phone,
+                            cohort: this.dataset.cohort
+                        };
+                        // Show rejection card immediately
+                        showRejectionCard(details);
+                        searchInput.value = '';
+                        suggestionsDiv.innerHTML = '';
+                    });
+                });
+            });
+    }, 300);
+});
+
+function escapeHtml(str) {
+    return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+    });
+}
+
+function showRejectionCard(details) {
+    const resultDiv = document.querySelector('.result') || document.createElement('div');
+    resultDiv.className = 'result REJECTED';
+    resultDiv.innerHTML = `
+        <h2>REJECTED</h2>
+        <p>${details.name} is already in Cohort ${details.cohort}.</p>
+        <div class="details-card">
+            <h3>Registered Applicant Details</h3>
+            <div class="details-grid">
+                <div class="detail-item"><span class="detail-label">Full Name:</span><span class="detail-value">${escapeHtml(details.name)}</span></div>
+                <div class="detail-item"><span class="detail-label">Gender:</span><span class="detail-value">${escapeHtml(details.gender)}</span></div>
+                <div class="detail-item"><span class="detail-label">Size:</span><span class="detail-value">${escapeHtml(details.size)}</span></div>
+                <div class="detail-item"><span class="detail-label">Phone Number:</span><span class="detail-value">${escapeHtml(details.phone)}</span></div>
+                <div class="detail-item"><span class="detail-label">Cohort:</span><span class="detail-value">Cohort ${escapeHtml(details.cohort)}</span></div>
+            </div>
+        </div>
+    `;
+    const container = document.querySelector('.container');
+    const existingResult = container.querySelector('.result');
+    if (existingResult) existingResult.remove();
+    container.appendChild(resultDiv);
+}
 </script>
 </body>
 </html>

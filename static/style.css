@@ -831,3 +831,35 @@ button:active {
 .toggle-option:has(input:checked) {
     background: rgba(78, 205, 196, 0.3);
 }
+
+.suggestions-list {
+    margin-top: 8px;
+    background: rgba(0,0,0,0.8);
+    border-radius: 16px;
+    overflow: hidden;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+    transition: background 0.15s;
+    color: white;
+    text-align: left;
+}
+
+.suggestion-item:hover {
+    background: rgba(78,205,196,0.3);
+}
+
+.suggestion-item.no-results {
+    cursor: default;
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+}
+
+.suggestion-item strong {
+    color: #4ecdc4;
+}
