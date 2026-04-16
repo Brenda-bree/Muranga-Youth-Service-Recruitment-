@@ -148,18 +148,22 @@
         }
     </script>
 
-    <script>
-        // Live name search with AJAX
+   <script>
+        // Live name search with AJAX + Keyboard Navigation
         const searchInput = document.getElementById('searchInput');
         const suggestionsDiv = document.getElementById('nameSuggestions');
         let currentSearchType = 'id';
         let debounceTimer;
+        let selectedIndex = -1;
+        let currentSuggestions = [];
 
         // Update when toggle changes
         document.querySelectorAll('input[name="search_type"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 currentSearchType = this.value;
                 suggestionsDiv.innerHTML = '';
+                selectedIndex = -1;
+                currentSuggestions = [];
                 const spinner = document.getElementById('searchSpinner');
                 if (spinner) spinner.style.display = 'none';
                 
@@ -175,10 +179,63 @@
             });
         });
 
+        // Keyboard navigation
+        searchInput.addEventListener('keydown', function(e) {
+            if (currentSearchType !== 'name') return;
+            const items = document.querySelectorAll('.suggestion-item:not(.no-results)');
+            if (items.length === 0) return;
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+                updateHighlight(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectedIndex = Math.max(selectedIndex - 1, -1);
+                updateHighlight(items);
+            } else if (e.key === 'Enter' && selectedIndex >= 0) {
+                e.preventDefault();
+                const selected = items[selectedIndex];
+                if (selected) {
+                    const details = {
+                        name: selected.dataset.name,
+                        gender: selected.dataset.gender,
+                        size: selected.dataset.size,
+                        phone: selected.dataset.phone,
+                        cohort: selected.dataset.cohort
+                    };
+                    showRejectionCard(details);
+                    searchInput.value = '';
+                    suggestionsDiv.innerHTML = '';
+                    selectedIndex = -1;
+                    currentSuggestions = [];
+                    const spinner = document.getElementById('searchSpinner');
+                    if (spinner) spinner.style.display = 'none';
+                }
+            } else if (e.key === 'Escape') {
+                suggestionsDiv.innerHTML = '';
+                selectedIndex = -1;
+                currentSuggestions = [];
+            }
+        });
+
+        function updateHighlight(items) {
+            items.forEach((item, idx) => {
+                if (idx === selectedIndex) {
+                    item.style.background = 'rgba(78, 205, 196, 0.4)';
+                    item.scrollIntoView({ block: 'nearest' });
+                } else {
+                    item.style.background = '';
+                }
+            });
+        }
+
         // Input handler with debounce
         searchInput.addEventListener('input', function() {
             if (currentSearchType !== 'name') {
                 suggestionsDiv.innerHTML = '';
+                selectedIndex = -1;
+                currentSuggestions = [];
                 const spinner = document.getElementById('searchSpinner');
                 if (spinner) spinner.style.display = 'none';
                 return;
@@ -187,6 +244,8 @@
             const query = this.value.trim();
             if (query.length < 2) {
                 suggestionsDiv.innerHTML = '';
+                selectedIndex = -1;
+                currentSuggestions = [];
                 const spinner = document.getElementById('searchSpinner');
                 if (spinner) spinner.style.display = 'none';
                 return;
@@ -197,6 +256,8 @@
                 const spinner = document.getElementById('searchSpinner');
                 if (spinner) spinner.style.display = 'flex';
                 suggestionsDiv.innerHTML = '';
+                selectedIndex = -1;
+                currentSuggestions = [];
                 
                 fetch(`/search/names?q=${encodeURIComponent(query)}`)
                     .then(response => response.json())
@@ -206,6 +267,7 @@
                             suggestionsDiv.innerHTML = '<div class="suggestion-item no-results">No matches found</div>';
                             return;
                         }
+                        currentSuggestions = data;
                         let html = '';
                         data.forEach(person => {
                             html += `<div class="suggestion-item" data-id="${person.id_number}" data-name="${person.name}" data-gender="${person.gender}" data-size="${person.size}" data-phone="${person.phone_number}" data-cohort="${person.cohort_number}">
@@ -227,6 +289,8 @@
                                 showRejectionCard(details);
                                 searchInput.value = '';
                                 suggestionsDiv.innerHTML = '';
+                                selectedIndex = -1;
+                                currentSuggestions = [];
                                 const spinner = document.getElementById('searchSpinner');
                                 if (spinner) spinner.style.display = 'none';
                             });
@@ -275,6 +339,6 @@
             // Scroll to result
             resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
-    </script>
+</script>
 </body>
 </html>
