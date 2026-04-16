@@ -25,6 +25,164 @@ body {
     transition: transform 0.2s;
 }
 
+/* ===== ADVANCED STICKY HEADER ===== */
+.sleek-header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.sleek-header:hover {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0.8rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo Area */
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.4rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-title {
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: #1e3c72;
+    letter-spacing: -0.3px;
+}
+
+.logo-subtitle {
+    font-size: 0.7rem;
+    color: #5a6e8a;
+    letter-spacing: 0.3px;
+}
+
+/* User Area */
+.user-area {
+    position: relative;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.04);
+    padding: 8px 16px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.user-profile:hover {
+    background: rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+}
+
+.user-profile i:first-child {
+    font-size: 1.8rem;
+    color: #2a5298;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #2c3e66;
+}
+
+.user-profile i:last-child {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    position: absolute;
+    top: 55px;
+    right: 0;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 1001;
+    backdrop-filter: blur(8px);
+    background: rgba(255,255,255,0.98);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    top: 48px;
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    color: #2c3e66;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: background 0.15s;
+}
+
+.dropdown-menu a:hover {
+    background: rgba(42, 82, 152, 0.08);
+}
+
+.dropdown-menu a i {
+    width: 20px;
+    font-size: 1rem;
+}
+
+body {
+    padding-top: 0;
+}
+
+.main-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 70px);
+    padding: 2rem;
+}
+
 h1 {
     color: #333;
     margin-bottom: 0.5rem;
