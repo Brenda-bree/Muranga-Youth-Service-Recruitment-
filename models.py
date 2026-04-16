@@ -32,3 +32,17 @@ def init_database():
     conn.close()   
     
     print("Database table 'recruitees' created with fields: name, id_number, gender, size, phone_number, cohort_number")
+
+def load_cohort_data():
+    """
+    Loads all 8 cohorts of existing recruitees into the database.
+    YOU ONLY RUN THIS ONCE when setting up the system.
+    """
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    # Data loading to go her
+    
+    conn.commit()
+    conn.close()
+    print("Load cohort data function ready.")
