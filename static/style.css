@@ -96,18 +96,67 @@ body {
 }
 
 .container {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(2px);
+    background: rgba(15, 25, 45, 0.75);
+    backdrop-filter: blur(16px);
+    border-radius: 32px;
     padding: 2rem;
-    border-radius: 28px;
-    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2);
     width: 550px;
     max-width: 90%;
     text-align: center;
-    transition: transform 0.2s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* ===== ADVANCED STICKY HEADER ===== */
+.container::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        #ff6b6b, #4ecdc4, #45b7d1, #96c93d, 
+        #ff6b6b, #4ecdc4, #45b7d1, #96c93d);
+    background-size: 400%;
+    border-radius: 34px;
+    z-index: -1;
+    animation: gradientShift 8s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.container:hover::before {
+    opacity: 0.6;
+}
+
+.container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 55px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Text inside container */
+.container h1 {
+    color: white;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff, #a0c0f0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.container p {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.9rem;
+}
 .sleek-header {
     position: sticky;
     top: 0;
@@ -317,7 +366,6 @@ button:hover {
     border: 1px solid #ffeeba;
 }
 
-/* Premium detailed card for rejected applicants */
 .details-card {
     margin-top: 25px;
     padding: 0;
