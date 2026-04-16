@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <!-- Shard animation overlay -->
+<div class="shard-overlay">
+    <div class="shard shard-1"></div>
+    <div class="shard shard-2"></div>
+    <div class="shard shard-3"></div>
+    <div class="shard shard-4"></div>
+</div>
+
     <!-- Sticky Header -->
     <header class="sleek-header">
         <div class="header-container">
@@ -96,5 +104,42 @@
             }
         });
     </script>
+
+    <script>
+    // Remove shard overlay after animation
+    window.addEventListener('load', () => {
+        const overlay = document.querySelector('.shard-overlay');
+        setTimeout(() => {
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 600);
+        }, 800);
+    });
+
+    // Scroll shrink header
+    const header = document.querySelector('.sleek-header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            header.classList.add('shrink');
+        } else {
+            header.classList.remove('shrink');
+        }
+    });
+
+    // Dropdown toggle
+    const profile = document.getElementById('userProfile');
+    const dropdown = document.getElementById('dropdownMenu');
+    if (profile && dropdown) {
+        profile.addEventListener('click', () => {
+            dropdown.classList.toggle('show');
+        });
+        window.addEventListener('click', (e) => {
+            if (!profile.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    }
+</script>
 </body>
 </html>
