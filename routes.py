@@ -1,4 +1,4 @@
-from flask import request, render_template
+from flask import request, render_template, jsonify
 from models import get_db_connection
 
 def register_routes(app):
@@ -35,3 +35,12 @@ def register_routes(app):
                 'status': 'APPROVED',
                 'message': "Clear for registration in Cohort 9."
             })
+    
+    @app.route('/debug/ids')
+    def debug_ids():
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id_number, name, cohort_number FROM recruitees LIMIT 10")
+        rows = cursor.fetchall()
+        conn.close()
+        return jsonify([dict(row) for row in rows])
