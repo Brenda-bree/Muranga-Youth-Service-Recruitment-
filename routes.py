@@ -31,17 +31,24 @@ def register_routes(app):
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT name, cohort_number FROM recruitees WHERE id_number = ?",
+            "SELECT name, gender, size, phone_number, cohort_number FROM recruitees WHERE id_number = ?",
             (id_number,)
-        )
+)
         existing = cursor.fetchone()
         conn.close()
         
         if existing:
             return render_template('index.html', result={
                 'status': 'REJECTED',
-                'message': f"{existing['name']} is already in Cohort {existing['cohort_number']}."
-            })
+                'message': f"{existing['name']} is already in Cohort {existing['cohort_number']}.",
+                'details': {
+                    'name': existing['name'],
+                    'gender': existing['gender'],
+                    'size': existing['size'],
+                    'phone': existing['phone_number'],
+                    'cohort': existing['cohort_number']
+                }
+     })
         else:
             return render_template('index.html', result={
                 'status': 'APPROVED',
