@@ -1,6 +1,9 @@
-from flask import request, render_template, jsonify
-from models import get_db_connection
 
+
+from flask import request, render_template, jsonify, redirect, url_for, flash
+from flask_login import login_user, logout_user, login_required, current_user
+import bcrypt
+from models import get_user_by_username, get_db_connection
 def register_routes(app):
     @app.route('/')
     def index():
@@ -93,7 +96,7 @@ def register_routes(app):
         return jsonify([dict(row) for row in rows])
     
 
-        @app.route('/search/names', methods=['GET'])
+    @app.route('/search/names', methods=['GET'])
     def search_names():
         query = request.args.get('q', '').strip()
         if len(query) < 2:
