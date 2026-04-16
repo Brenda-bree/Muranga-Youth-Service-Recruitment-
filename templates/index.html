@@ -5,51 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Youth Service Recruitment Verification</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Recruitment Verification System</h1>
-        <p>Enter ID Number to check if applicant has been recruited before</p>
-        
-        <form action="/verify" method="POST">
-            <input type="text" name="id_number" placeholder="Enter ID Number" required>
-            <button type="submit">Verify</button>
-        </form>
+    <!-- Sticky Header -->
+    <header class="sleek-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-title">Muranga Youth Service</span>
+                    <span class="logo-subtitle">Recruitment Verification Portal</span>
+                </div>
+            </div>
+            <div class="user-area">
+                <div class="user-profile" id="userProfile">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="user-name">Staff</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="#"><i class="fas fa-user"></i> Profile</a>
+                    <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                    <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
 
-                {% if result %}
-            <div class="result {{ result.status }}">
-                <h2>{{ result.status }}</h2>
-                <p>{{ result.message }}</p>
-                
-                {% if result.status == 'REJECTED' and result.details %}
-                    <div class="details-card">
-                        <h3>Registered Applicant Details</h3>
-                        <div class="details-grid">
-                            <div class="detail-item">
-                                <span class="detail-label">Full Name:</span>
-                                <span class="detail-value">{{ result.details.name }}</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Gender:</span>
-                                <span class="detail-value">{{ result.details.gender }}</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Size:</span>
-                                <span class="detail-value">{{ result.details.size }}</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Phone Number:</span>
-                                <span class="detail-value">{{ result.details.phone }}</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Cohort:</span>
-                                <span class="detail-value">Cohort {{ result.details.cohort }}</span>
+    <!-- Main Content -->
+    <div class="main-wrapper">
+        <div class="container">
+            <h1>Verification System</h1>
+            <p>Enter ID Number to check if applicant has been recruited before</p>
+            
+            <form action="/verify" method="POST">
+                <input type="text" name="id_number" placeholder="Enter ID Number" required>
+                <button type="submit">Verify</button>
+            </form>
+
+            {% if result %}
+                <div class="result {{ result.status }}">
+                    <h2>{{ result.status }}</h2>
+                    <p>{{ result.message }}</p>
+                    
+                    {% if result.status == 'REJECTED' and result.details %}
+                        <div class="details-card">
+                            <h3>Registered Applicant Details</h3>
+                            <div class="details-grid">
+                                <div class="detail-item">
+                                    <span class="detail-label">Full Name:</span>
+                                    <span class="detail-value">{{ result.details.name }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Gender:</span>
+                                    <span class="detail-value">{{ result.details.gender }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Size:</span>
+                                    <span class="detail-value">{{ result.details.size }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Phone Number:</span>
+                                    <span class="detail-value">{{ result.details.phone }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Cohort:</span>
+                                    <span class="detail-value">Cohort {{ result.details.cohort }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endif %}
-            </div>
-        {% endif %}
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
     </div>
+
+    <script>
+        // Simple dropdown toggle
+        const profile = document.getElementById('userProfile');
+        const dropdown = document.getElementById('dropdownMenu');
+        profile.addEventListener('click', () => {
+            dropdown.classList.toggle('show');
+        });
+        window.addEventListener('click', (e) => {
+            if (!profile.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    </script>
 </body>
 </html>
