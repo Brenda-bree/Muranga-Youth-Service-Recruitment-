@@ -984,3 +984,23 @@ input:focus::placeholder {
     color: #4ecdc4;
     font-weight: 600;
 }
+
+/* Loading spinner */
+.search-spinner {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(78, 205, 196, 0.2);
+    border-top-color: #4ecdc4;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
