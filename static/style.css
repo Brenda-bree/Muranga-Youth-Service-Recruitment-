@@ -69,3 +69,47 @@ button:hover {
     color: #856404;
     border: 1px solid #ffeeba;
 }
+
+/* Deailed card for rejected appliants */
+.details-card {
+    margin-top: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: left;
+}
+
+.details-card h3 {
+    margin: 0 0 15px 0;
+    color: #721c24;
+    font-size: 1.2rem;
+    border-bottom: 2px solid #f5c6cb;
+    padding-bottom: 8px;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 12px 8px;
+}
+
+.detail-item {
+    display: contents;
+}
+
+.detail-label {
+    font-weight: bold;
+    color: #555;
+    background: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.detail-value {
+    color: #333;
+    background: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
