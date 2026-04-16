@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youth Service Recruitment Verification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Recruitment Verification System</h1>
+        <p>Enter ID Number to check if applicant has been recruited before</p>
+        
+        <form action="/verify" method="POST">
+            <input type="text" name="id_number" placeholder="Enter ID Number" required>
+            <button type="submit">Verify</button>
+        </form>
+
+        {% if result %}
+            <div class="result {{ result.status }}">
+                <h2>{{ result.status }}</h2>
+                <p>{{ result.message }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
