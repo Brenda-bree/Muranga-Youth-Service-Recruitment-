@@ -21,7 +21,7 @@
         <div class="header-container">
             <div class="logo-area">
                 <div class="logo-icon">
-                    <i class="fas fa-building"></i>
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Muranga County Logo" class="logo-img">
                 </div>
                 <div class="logo-text">
                     <span class="logo-title">Muranga Youth Service</span>
@@ -48,11 +48,42 @@
         <div class="container">
             <h1>Verification System</h1>
             <p>Enter ID Number to check if applicant has been recruited before</p>
-            
-            <form action="/verify" method="POST">
-                <input type="text" name="id_number" placeholder="Enter ID Number" required>
-                <button type="submit">Verify</button>
-            </form>
+        <form action="/verify" method="POST">
+            <!-- Search Toggle -->
+            <div class="search-toggle">
+                <label class="toggle-option">
+                    <input type="radio" name="search_type" value="id" checked> 
+                    <span>ID Number</span>
+                </label>
+                <label class="toggle-option">
+                    <input type="radio" name="search_type" value="name"> 
+                    <span>Name</span>
+                </label>
+            </div>
+
+            <input type="text" name="search_term" id="searchInput" placeholder="Enter ID Number (9 digits)" required>
+
+            <button type="submit">Verify</button>
+        </form>
+
+<script>
+    const radios = document.querySelectorAll('input[name="search_type"]');
+    const searchInput = document.getElementById('searchInput');
+    
+    radios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'id') {
+                searchInput.placeholder = 'Enter ID Number (9 digits)';
+                searchInput.maxLength = 9;
+                searchInput.pattern = '\\d{9}';
+            } else {
+                searchInput.placeholder = 'Enter Full Name (e.g., John Doe)';
+                searchInput.maxLength = 100;
+                searchInput.removeAttribute('pattern');
+            }
+        });
+    });
+</script>
 
             {% if result %}
                 <div class="result {{ result.status }}">

@@ -11,7 +11,6 @@ body {
 }
 
 
-/* ===== BROKEN SHARDS JOINING ANIMATION ===== */
 .shard-overlay {
     position: fixed;
     top: 0;
@@ -122,13 +121,13 @@ body {
     background-size: 400%;
     border-radius: 34px;
     z-index: -1;
-    animation: gradientShift 8s linear infinite;
+    animation: gradientShift 30s linear infinite;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .container:hover::before {
-    opacity: 0.6;
+    opacity: 0.2;
 }
 
 .container:hover {
@@ -190,7 +189,7 @@ body {
 }
 
 .logo-icon {
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    background: clear;
     width: 40px;
     height: 40px;
     border-radius: 12px;
@@ -223,6 +222,17 @@ body {
 /* User Area */
 .user-area {
     position: relative;
+}
+.logo-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 10px;
+    transition: transform 0.2s ease;
+}
+
+.logo-img:hover {
+    transform: scale(1.05);
 }
 
 .user-profile {
@@ -418,7 +428,6 @@ button:hover {
     to { width: 100%; }
 }
 
-/* ===== ELEGANT DETAILS CARD ===== */
 .details-card {
     margin-top: 20px;
     background: rgba(0, 0, 0, 0.5);
@@ -790,4 +799,35 @@ button:hover {
 
 button:active {
     transform: translateY(1px);
+}
+
+.search-toggle {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 15px;
+    background: rgba(255,255,255,0.1);
+    padding: 8px;
+    border-radius: 60px;
+}
+
+.toggle-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 6px 16px;
+    border-radius: 40px;
+    transition: all 0.2s;
+    color: white;
+}
+
+.toggle-option input {
+    margin: 0;
+    width: auto;
+    cursor: pointer;
+}
+
+.toggle-option:has(input:checked) {
+    background: rgba(78, 205, 196, 0.3);
 }
