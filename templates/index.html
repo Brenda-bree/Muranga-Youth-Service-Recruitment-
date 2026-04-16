@@ -4,10 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Youth Service Recruitment Verification</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+
+{% if current_user.is_authenticated and current_user.is_admin %}
+    <div class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-header">
+            <h3>Admin Panel</h3>
+            <button class="close-sidebar" id="closeSidebar">&times;</button>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="/admin/database"><i class="fas fa-database"></i> Update Database</a></li>
+            <li><a href="/admin/staff"><i class="fas fa-users"></i> Update Staff</a></li>
+        </ul>
+    </div>
+    <button class="open-sidebar" id="openSidebar"><i class="fas fa-bars"></i></button>
+{% endif %}
     <!-- Shard animation overlay -->
     <div class="shard-overlay">
         <div class="shard shard-1"></div>
@@ -21,7 +35,7 @@
         <div class="header-container">
             <div class="logo-area">
                 <div class="logo-icon">
-                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Muranga County Logo" class="logo-img">
+                    <img src="/static/images/logo.png" alt="Muranga County Logo" class="logo-img">
                 </div>
                 <div class="logo-text">
                     <span class="logo-title">Muranga Youth Service</span>
