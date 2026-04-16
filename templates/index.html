@@ -9,12 +9,12 @@
 </head>
 <body>
     <!-- Shard animation overlay -->
-<div class="shard-overlay">
-    <div class="shard shard-1"></div>
-    <div class="shard shard-2"></div>
-    <div class="shard shard-3"></div>
-    <div class="shard shard-4"></div>
-</div>
+    <div class="shard-overlay">
+        <div class="shard shard-1"></div>
+        <div class="shard shard-2"></div>
+        <div class="shard shard-3"></div>
+        <div class="shard shard-4"></div>
+    </div>
 
     <!-- Sticky Header -->
     <header class="sleek-header">
@@ -47,47 +47,32 @@
     <div class="main-wrapper">
         <div class="container">
             <h1>Verification System</h1>
-            <p>Enter ID Number to check if applicant has been recruited before</p>
-        <form action="/verify" method="POST">
-            <!-- Search Toggle -->
-            <div class="search-toggle">
-                <label class="toggle-option">
-                    <input type="radio" name="search_type" value="id" checked>
-                    <div id="nameSuggestions" class="suggestions-list"></div> 
-                    <div id="searchSpinner" class="search-spinner" style="display: none;">
-                        <div class="spinner"></div>
-                    </div>
-                    <span>ID Number</span>
-                </label>
-                <label class="toggle-option">
-                    <input type="radio" name="search_type" value="name"> 
-                    <span>Name</span>
-                </label>
-            </div>
+            <p>Enter ID Number or Name to check if applicant has been recruited before</p>
+            
+            <form action="/verify" method="POST">
+                <!-- Search Toggle -->
+                <div class="search-toggle">
+                    <label class="toggle-option">
+                        <input type="radio" name="search_type" value="id" checked> 
+                        <span>ID Number</span>
+                    </label>
+                    <label class="toggle-option">
+                        <input type="radio" name="search_type" value="name"> 
+                        <span>Name</span>
+                    </label>
+                </div>
 
-            <input type="text" name="search_term" id="searchInput" placeholder="Enter ID Number (9 digits)" required>
+                <!-- Search input field -->
+                <input type="text" name="id_number" id="searchInput" placeholder="Enter ID Number (9 digits)" required>
 
-            <button type="submit">Verify</button>
-        </form>
+                <!-- Suggestions and spinner -->
+                <div id="nameSuggestions" class="suggestions-list"></div>
+                <div id="searchSpinner" class="search-spinner" style="display: none;">
+                    <div class="spinner"></div>
+                </div>
 
-<script>
-    const radios = document.querySelectorAll('input[name="search_type"]');
-    const searchInput = document.getElementById('searchInput');
-    
-    radios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            if (this.value === 'id') {
-                searchInput.placeholder = 'Enter ID Number (9 digits)';
-                searchInput.maxLength = 9;
-                searchInput.pattern = '\\d{9}';
-            } else {
-                searchInput.placeholder = 'Enter Full Name (e.g., John Doe)';
-                searchInput.maxLength = 100;
-                searchInput.removeAttribute('pattern');
-            }
-        });
-    });
-</script>
+                <button type="submit">Verify</button>
+            </form>
 
             {% if result %}
                 <div class="result {{ result.status }}">
@@ -127,185 +112,169 @@
     </div>
 
     <script>
-        // Simple dropdown toggle
-        const profile = document.getElementById('userProfile');
-        const dropdown = document.getElementById('dropdownMenu');
-        profile.addEventListener('click', () => {
-            dropdown.classList.toggle('show');
+        // Remove shard overlay after animation
+        window.addEventListener('load', () => {
+            const overlay = document.querySelector('.shard-overlay');
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 600);
+            }, 800);
         });
-        window.addEventListener('click', (e) => {
-            if (!profile.contains(e.target)) {
-                dropdown.classList.remove('show');
+
+        // Scroll shrink header
+        const header = document.querySelector('.sleek-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('shrink');
+            } else {
+                header.classList.remove('shrink');
             }
         });
+
+        // Dropdown toggle
+        const profile = document.getElementById('userProfile');
+        const dropdown = document.getElementById('dropdownMenu');
+        if (profile && dropdown) {
+            profile.addEventListener('click', () => {
+                dropdown.classList.toggle('show');
+            });
+            window.addEventListener('click', (e) => {
+                if (!profile.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                }
+            });
+        }
     </script>
 
     <script>
-    // Remove shard overlay after animation
-    window.addEventListener('load', () => {
-        const overlay = document.querySelector('.shard-overlay');
-        setTimeout(() => {
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-            }, 600);
-        }, 800);
-    });
+        // Live name search with AJAX
+        const searchInput = document.getElementById('searchInput');
+        const suggestionsDiv = document.getElementById('nameSuggestions');
+        let currentSearchType = 'id';
+        let debounceTimer;
 
-    // Scroll shrink header
-    const header = document.querySelector('.sleek-header');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('shrink');
-        } else {
-            header.classList.remove('shrink');
-        }
-    });
-
-    // Dropdown toggle
-    const profile = document.getElementById('userProfile');
-    const dropdown = document.getElementById('dropdownMenu');
-    if (profile && dropdown) {
-        profile.addEventListener('click', () => {
-            dropdown.classList.toggle('show');
-        });
-        window.addEventListener('click', (e) => {
-            if (!profile.contains(e.target)) {
-                dropdown.classList.remove('show');
-            }
-        });
-    }
-</script>
-
-<script>
-    // Live name search with AJAX
-    const searchInput = document.getElementById('searchInput');
-    const suggestionsDiv = document.getElementById('nameSuggestions');
-    let currentSearchType = 'id';
-    let debounceTimer;
-
-    // Update when toggle changes
-    document.querySelectorAll('input[name="search_type"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            currentSearchType = this.value;
-            suggestionsDiv.innerHTML = '';
-            const spinner = document.getElementById('searchSpinner');
-            if (spinner) spinner.style.display = 'none';
-            
-            if (currentSearchType === 'name') {
-                searchInput.placeholder = 'Enter name (min 2 chars)';
-                searchInput.maxLength = 100;
-                searchInput.removeAttribute('pattern');
-            } else {
-                searchInput.placeholder = 'Enter ID Number (9 digits)';
-                searchInput.maxLength = 9;
-                searchInput.pattern = '\\d{9}';
+        // Update when toggle changes
+        document.querySelectorAll('input[name="search_type"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                currentSearchType = this.value;
                 suggestionsDiv.innerHTML = '';
+                const spinner = document.getElementById('searchSpinner');
+                if (spinner) spinner.style.display = 'none';
+                
+                if (currentSearchType === 'name') {
+                    searchInput.placeholder = 'Enter name (min 2 chars)';
+                    searchInput.maxLength = 100;
+                    searchInput.removeAttribute('pattern');
+                } else {
+                    searchInput.placeholder = 'Enter ID Number (9 digits)';
+                    searchInput.maxLength = 9;
+                    searchInput.pattern = '\\d{9}';
+                }
+            });
+        });
+
+        // Input handler with debounce
+        searchInput.addEventListener('input', function() {
+            if (currentSearchType !== 'name') {
+                suggestionsDiv.innerHTML = '';
+                const spinner = document.getElementById('searchSpinner');
+                if (spinner) spinner.style.display = 'none';
+                return;
             }
-        });
-    });
-
-    // Input handler with debounce
-    searchInput.addEventListener('input', function() {
-        if (currentSearchType !== 'name') {
-            suggestionsDiv.innerHTML = '';
-            const spinner = document.getElementById('searchSpinner');
-            if (spinner) spinner.style.display = 'none';
-            return;
-        }
-        
-        const query = this.value.trim();
-        if (query.length < 2) {
-            suggestionsDiv.innerHTML = '';
-            const spinner = document.getElementById('searchSpinner');
-            if (spinner) spinner.style.display = 'none';
-            return;
-        }
-        
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-            const spinner = document.getElementById('searchSpinner');
-            if (spinner) spinner.style.display = 'flex';
-            suggestionsDiv.innerHTML = '';
             
-            fetch(`/search/names?q=${encodeURIComponent(query)}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (spinner) spinner.style.display = 'none';
-                    if (data.length === 0) {
-                        suggestionsDiv.innerHTML = '<div class="suggestion-item no-results">No matches found</div>';
-                        return;
-                    }
-                    let html = '';
-                    data.forEach(person => {
-                        html += `<div class="suggestion-item" data-id="${person.id_number}" data-name="${person.name}" data-gender="${person.gender}" data-size="${person.size}" data-phone="${person.phone_number}" data-cohort="${person.cohort_number}">
-                                    <strong>${escapeHtml(person.name)}</strong> (ID: ${person.id_number}) - Cohort ${person.cohort_number}
-                                </div>`;
-                    });
-                    suggestionsDiv.innerHTML = html;
-                    
-                    // Add click handlers to suggestions
-                    document.querySelectorAll('.suggestion-item').forEach(item => {
-                        item.addEventListener('click', function() {
-                            const details = {
-                                name: this.dataset.name,
-                                gender: this.dataset.gender,
-                                size: this.dataset.size,
-                                phone: this.dataset.phone,
-                                cohort: this.dataset.cohort
-                            };
-                            showRejectionCard(details);
-                            searchInput.value = '';
-                            suggestionsDiv.innerHTML = '';
-                            const spinner = document.getElementById('searchSpinner');
-                            if (spinner) spinner.style.display = 'none';
+            const query = this.value.trim();
+            if (query.length < 2) {
+                suggestionsDiv.innerHTML = '';
+                const spinner = document.getElementById('searchSpinner');
+                if (spinner) spinner.style.display = 'none';
+                return;
+            }
+            
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const spinner = document.getElementById('searchSpinner');
+                if (spinner) spinner.style.display = 'flex';
+                suggestionsDiv.innerHTML = '';
+                
+                fetch(`/search/names?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (spinner) spinner.style.display = 'none';
+                        if (data.length === 0) {
+                            suggestionsDiv.innerHTML = '<div class="suggestion-item no-results">No matches found</div>';
+                            return;
+                        }
+                        let html = '';
+                        data.forEach(person => {
+                            html += `<div class="suggestion-item" data-id="${person.id_number}" data-name="${person.name}" data-gender="${person.gender}" data-size="${person.size}" data-phone="${person.phone_number}" data-cohort="${person.cohort_number}">
+                                        <strong>${escapeHtml(person.name)}</strong> (ID: ${person.id_number}) - Cohort ${person.cohort_number}
+                                    </div>`;
                         });
+                        suggestionsDiv.innerHTML = html;
+                        
+                        // Add click handlers to suggestions
+                        document.querySelectorAll('.suggestion-item').forEach(item => {
+                            item.addEventListener('click', function() {
+                                const details = {
+                                    name: this.dataset.name,
+                                    gender: this.dataset.gender,
+                                    size: this.dataset.size,
+                                    phone: this.dataset.phone,
+                                    cohort: this.dataset.cohort
+                                };
+                                showRejectionCard(details);
+                                searchInput.value = '';
+                                suggestionsDiv.innerHTML = '';
+                                const spinner = document.getElementById('searchSpinner');
+                                if (spinner) spinner.style.display = 'none';
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        if (spinner) spinner.style.display = 'none';
+                        suggestionsDiv.innerHTML = '<div class="suggestion-item no-results">Error loading suggestions</div>';
+                        console.error('Search error:', error);
                     });
-                })
-                .catch(error => {
-                    if (spinner) spinner.style.display = 'none';
-                    suggestionsDiv.innerHTML = '<div class="suggestion-item no-results">Error loading suggestions</div>';
-                    console.error('Search error:', error);
-                });
-        }, 300);
-    });
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
+            }, 300);
         });
-    }
 
-    function showRejectionCard(details) {
-        const container = document.querySelector('.container');
-        let resultDiv = container.querySelector('.result');
-        if (!resultDiv) {
-            resultDiv = document.createElement('div');
-            container.appendChild(resultDiv);
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
         }
-        resultDiv.className = 'result REJECTED';
-        resultDiv.innerHTML = `
-            <h2>REJECTED</h2>
-            <p>${escapeHtml(details.name)} is already in Cohort ${escapeHtml(details.cohort)}.</p>
-            <div class="details-card">
-                <h3>Registered Applicant Details</h3>
-                <div class="details-grid">
-                    <div class="detail-item"><span class="detail-label">Full Name:</span><span class="detail-value">${escapeHtml(details.name)}</span></div>
-                    <div class="detail-item"><span class="detail-label">Gender:</span><span class="detail-value">${escapeHtml(details.gender)}</span></div>
-                    <div class="detail-item"><span class="detail-label">Size:</span><span class="detail-value">${escapeHtml(details.size)}</span></div>
-                    <div class="detail-item"><span class="detail-label">Phone Number:</span><span class="detail-value">${escapeHtml(details.phone)}</span></div>
-                    <div class="detail-item"><span class="detail-label">Cohort:</span><span class="detail-value">Cohort ${escapeHtml(details.cohort)}</span></div>
+
+        function showRejectionCard(details) {
+            const container = document.querySelector('.container');
+            let resultDiv = container.querySelector('.result');
+            if (!resultDiv) {
+                resultDiv = document.createElement('div');
+                container.appendChild(resultDiv);
+            }
+            resultDiv.className = 'result REJECTED';
+            resultDiv.innerHTML = `
+                <h2>REJECTED</h2>
+                <p>${escapeHtml(details.name)} is already in Cohort ${escapeHtml(details.cohort)}.</p>
+                <div class="details-card">
+                    <h3>Registered Applicant Details</h3>
+                    <div class="details-grid">
+                        <div class="detail-item"><span class="detail-label">Full Name:</span><span class="detail-value">${escapeHtml(details.name)}</span></div>
+                        <div class="detail-item"><span class="detail-label">Gender:</span><span class="detail-value">${escapeHtml(details.gender)}</span></div>
+                        <div class="detail-item"><span class="detail-label">Size:</span><span class="detail-value">${escapeHtml(details.size)}</span></div>
+                        <div class="detail-item"><span class="detail-label">Phone Number:</span><span class="detail-value">${escapeHtml(details.phone)}</span></div>
+                        <div class="detail-item"><span class="detail-label">Cohort:</span><span class="detail-value">Cohort ${escapeHtml(details.cohort)}</span></div>
+                    </div>
                 </div>
-            </div>
-        `;
-        // Scroll to result
-        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-</script>
-</script>
+            `;
+            // Scroll to result
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
 </body>
 </html>
