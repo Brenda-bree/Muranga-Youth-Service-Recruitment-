@@ -45,3 +45,40 @@ def get_user_by_username(username):
     user = cursor.fetchone()
     conn.close()
     return user
+
+
+#to help the admin get logged in staff
+def get_all_users():
+    """Fetch all users (excluding passwords)"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, username, role, created_at FROM users ORDER BY created_at DESC")
+    users = cursor.fetchall()
+    conn.close()
+    return users
+
+def create_user(username, hashed_password, role):
+    """Create a new user"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "INSERT INTO users (username, hashed_password, role) VALUES (?, ?, ?)",
+            (username, hashed_password, role)
+        )
+        conn.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
+    finally:
+        conn.close()
+
+def delete_user_by_id(user_id):
+    """Delete a user by ID"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
+    affected = cursor.rowcount
+    conn.commit()
+    conn.close()
+    return affected > 0
