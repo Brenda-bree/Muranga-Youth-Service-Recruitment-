@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Staff - Admin</title>
+    <link rel="stylesheet" href="/static/css/admin_staff.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="admin-page">
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1><i class="fas fa-users"></i> Manage Staff & Admins</h1>
+            <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Verification</a>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Add User Form -->
+        <div class="card">
+            <h2>Add New User</h2>
+            <form method="POST" action="/admin/staff/add">
+                <div class="form-row">
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="password" name="password" placeholder="Password (min 4 chars)" required>
+                    <select name="role">
+                        <option value="staff">Staff</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    <button type="submit"><i class="fas fa-plus"></i> Add User</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Users List -->
+        <div class="card">
+            <h2>Existing Users</h2>
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }} {% if user.id == current_user.id %}<span class="badge">(You)</span>{% endif %}</td>
+                        <td><span class="role-badge {{ user.role }}">{{ user.role }}</span></td>
+                        <td>{{ user.created_at }}</td>
+                        <td>
+                            {% if user.id != current_user.id %}
+                            <a href="/admin/staff/delete/{{ user.id }}" class="delete-btn" onclick="return confirm('Delete user {{ user.username }}? This cannot be undone.')">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                            {% else %}
+                            <span class="disabled">Cannot delete self</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+</body>
+</html>
