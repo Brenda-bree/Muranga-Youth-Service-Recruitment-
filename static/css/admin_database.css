@@ -1,0 +1,144 @@
+
+        /* Additional styles for database page */
+        .admin-page {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .admin-header h1 {
+            color: white;
+            font-weight: 600;
+            font-size: 1.8rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .btn-add {
+            background: linear-gradient(135deg, #2E7D32, #1B5E20);
+            padding: 10px 24px;
+            border-radius: 40px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .btn-add:hover {
+            background: linear-gradient(135deg, #1B5E20, #0D3B0F);
+            transform: translateY(-2px);
+        }
+        .back-link {
+            background: rgba(255,255,255,0.1);
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: #4ecdc4;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .recruitee-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #e0e0e0;
+        }
+        .recruitee-table th {
+            text-align: left;
+            padding: 1rem 0.8rem;
+            background: rgba(0,0,0,0.3);
+            font-weight: 600;
+            color: #D4AF37;
+        }
+        .recruitee-table td {
+            padding: 0.8rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-edit, .btn-delete {
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-edit {
+            background: rgba(78, 205, 196, 0.2);
+            color: #4ecdc4;
+        }
+        .btn-edit:hover {
+            background: rgba(78, 205, 196, 0.4);
+            transform: scale(1.02);
+        }
+        .btn-delete {
+            background: rgba(245, 101, 101, 0.2);
+            color: #f56565;
+        }
+        .btn-delete:hover {
+            background: rgba(245, 101, 101, 0.4);
+            transform: scale(1.02);
+        }
+        .flash-message {
+            display: none;
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        .badge-cohort {
+            background: #D4AF37;
+            color: #0a1f1a;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .admin-page { padding: 1rem; }
+            .recruitee-table, .recruitee-table tbody, .recruitee-table tr, .recruitee-table td {
+                display: block;
+            }
+            .recruitee-table thead { display: none; }
+            .recruitee-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.8rem;
+            }
+            .recruitee-table td:before {
+                content: attr(data-label);
+                font-weight: bold;
+                color: #D4AF37;
+            }
+            .action-buttons {
+                justify-content: flex-end;
+            }
+        }
+
+        
+    

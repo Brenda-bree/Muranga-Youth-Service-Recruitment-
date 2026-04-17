@@ -1,0 +1,104 @@
+        .profile-page {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .profile-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(16px);
+            border-radius: 32px;
+            padding: 2rem;
+            width: 450px;
+            max-width: 90%;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.3);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #D4AF37, #2E7D32);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 3rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        .role-badge {
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        .role-badge.admin {
+            background: #f56565;
+            color: white;
+        }
+        .role-badge.staff {
+            background: #2E7D32;
+            color: white;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: left;
+        }
+        .info-label {
+            color: #D4AF37;
+            font-weight: 500;
+        }
+        .info-value {
+            color: white;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .btn-change-pwd, .btn-back {
+            flex: 1;
+            padding: 10px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .btn-change-pwd {
+            background: linear-gradient(135deg, #D4AF37, #b8960c);
+            color: #0a1f1a;
+        }
+        .btn-change-pwd:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212,175,55,0.4);
+        }
+        .btn-back {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .btn-back:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        @media (max-width: 480px) {
+            .profile-card { padding: 1.5rem; }
+            .avatar { width: 70px; height: 70px; font-size: 2rem; }
+        }

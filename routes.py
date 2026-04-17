@@ -331,3 +331,5 @@ def register_routes(app):
                 flash('An error occurred. Please try again.', 'error')
         
         return render_template('change_password.html')
+    
+    
