@@ -140,3 +140,13 @@ def delete_recruitee(id_number):
     conn.commit()
     conn.close()
     return affected > 0
+
+def update_user_password(user_id, hashed_password):
+    """Update a user's password"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET hashed_password = ? WHERE id = ?", (hashed_password, user_id))
+    affected = cursor.rowcount
+    conn.commit()
+    conn.close()
+    return affected > 0
