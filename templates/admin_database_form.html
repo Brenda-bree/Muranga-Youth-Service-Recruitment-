@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ action }} Recruitee - Admin</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/admin_database_form.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+</head>
+<body class="admin-page">
+    <div class="form-container">
+        <div class="form-header">
+            <h1><i class="fas fa-{{ 'edit' if action == 'Edit' else 'plus' }}"></i> {{ action }} Recruitee</h1>
+            <a href="/admin/database" class="back-link"><i class="fas fa-arrow-left"></i> Back</a>
+        </div>
+
+        <form method="POST">
+            <div class="form-group">
+                <label class="required">ID Number (9 digits)</label>
+                <input type="text" name="id_number" value="{{ recruitee.id_number if recruitee else '' }}" {% if action == 'Edit' %}readonly{% endif %} required>
+                {% if action == 'Edit' %}<small style="color: #888;">ID cannot be changed</small>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="required">Full Name</label>
+                <input type="text" name="name" value="{{ recruitee.name if recruitee else '' }}" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select name="gender">
+                        <option value="">-- Select --</option>
+                        <option value="M" {% if recruitee and recruitee.gender == 'M' %}selected{% endif %}>Male (M)</option>
+                        <option value="F" {% if recruitee and recruitee.gender == 'F' %}selected{% endif %}>Female (F)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Size</label>
+                    <select name="size">
+                        <option value="">-- Select --</option>
+                        <option value="S" {% if recruitee and recruitee.size == 'S' %}selected{% endif %}>S</option>
+                        <option value="M" {% if recruitee and recruitee.size == 'M' %}selected{% endif %}>M</option>
+                        <option value="L" {% if recruitee and recruitee.size == 'L' %}selected{% endif %}>L</option>
+                        <option value="XL" {% if recruitee and recruitee.size == 'XL' %}selected{% endif %}>XL</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" value="{{ recruitee.phone_number if recruitee else '' }}" placeholder="e.g., 0712345678">
+            </div>
+
+            <div class="form-group">
+                <label class="required">Cohort Number</label>
+                <input type="number" name="cohort" value="{{ recruitee.cohort_number if recruitee else '' }}" min="1" max="99" required>
+            </div>
+
+            <button type="submit"><i class="fas fa-save"></i> {{ action }} Recruitee</button>
+        </form>
+    </div>
+
+    <div id="toastContainer" class="toast-container" style="position:fixed;top:20px;right:20px;z-index:9999;"></div>
+
+    <script>
+        function showToast(message, type) {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            let icon = type === 'success' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-exclamation-circle"></i>';
+            toast.innerHTML = `${icon}<div class="toast-content">${escapeHtml(message)}</div><button class="toast-close">&times;</button>`;
+            container.appendChild(toast);
+            toast.querySelector('.toast-close').onclick = () => toast.remove();
+            setTimeout(() => toast.remove(), 5000);
+        }
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const flash = document.querySelector('.flash-message');
+            if (flash) {
+                let type = flash.classList.contains('success') ? 'success' : 'error';
+                showToast(flash.textContent, type);
+            }
+        });
+    </script>
+    <style>
+        .toast {
+            background: rgba(20,30,45,0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            padding: 12px 18px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            animation: slideInRight 0.3s ease;
+        }
+        .toast.success { border-left: 4px solid #48bb78; }
+        .toast.error { border-left: 4px solid #f56565; }
+        .toast-close { background: none; border: none; color: rgba(255,255,255,0.6); cursor: pointer; margin-left: auto; font-size: 1.2rem; }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</body>
+</html>
