@@ -187,7 +187,7 @@ def register_routes(app):
         current_user_id = int(current_user.id)
         target_user_id = int(user_id)
         
-        # Prevent admin from deleting themselves
+        # Prevent admin from deeting themselves
         if target_user_id == current_user_id:
             flash('❌ You cannot delete your own account. This action has been blocked.', 'error')
             return redirect(url_for('admin_staff'))

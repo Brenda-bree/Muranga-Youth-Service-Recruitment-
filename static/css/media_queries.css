@@ -10,7 +10,6 @@
         overflow: hidden !important;
     }
 
-    /* Header - minimal */
     .details-card h3 {
         margin: 0 !important;
         padding: 10px 12px !important;
@@ -42,14 +41,12 @@
         letter-spacing: 0.3px !important;
     }
 
-    /* Grid becomes a clean table */
     .details-grid {
         display: table !important;
         width: 100% !important;
         border-collapse: collapse !important;
     }
 
-    /* Each row is a table row */
     .detail-item {
         display: table-row !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
@@ -94,7 +91,6 @@
         display: none !important;
     }
 
-    /* Add simple text prefix instead */
     .detail-item:nth-child(1) .detail-label::before {
         display: inline !important;
         content: "" !important;
@@ -255,7 +251,6 @@
     }
 }
 
-/* Hide subtitle on very small screens */
 @media (max-width: 420px) {
     .logo-subtitle {
         display: none !important;
@@ -307,9 +302,6 @@
     }
 }
 
-/* ============================================= */
-/* CHANGE PASSWORD - MOBILE          */
-/* ============================================= */
 
 @media (max-width: 768px) {
     .change-pwd-page {
@@ -431,7 +423,6 @@
     }
 }
 
-/* Ultra small screens */
 @media (max-width: 360px) {
     .pwd-card {
         padding: 16px 12px !important;
@@ -456,7 +447,6 @@
     }
 }
 
-/* Landscape orientation */
 @media (max-width: 768px) and (orientation: landscape) {
     .change-pwd-page {
         padding: 12px !important;
@@ -473,7 +463,6 @@
         margin-bottom: 12px !important;
     }
 
-    /* Two column layout for landscape */
     form {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
@@ -490,7 +479,6 @@
     }
 }
 
-/* Touch optimization */
 @media (max-width: 768px) and (hover: none) {
     button:active {
         transform: scale(0.98) !important;
@@ -508,7 +496,6 @@
     }
 }
 
-/* Ensure proper spacing when keyboard is open */
 @media (max-width: 768px) and (max-height: 600px) {
     .change-pwd-page {
         align-items: flex-start !important;
@@ -525,9 +512,6 @@
 }
 
 
-/* ============================================= */
-/*           PROFILE PAGE - MOBILE               */
-/* ============================================= */
 
 @media (max-width: 768px) {
     .profile-page {
@@ -544,7 +528,6 @@
         margin: 0 auto !important;
     }
 
-    /* Disable hover effect on mobile */
     .profile-card:hover {
         transform: none !important;
     }
@@ -737,7 +720,7 @@
     }
 }
 
-/* Touch optimization */
+/* Touch optimiation */
 @media (max-width: 768px) and (hover: none) {
     .btn-change-pwd:active {
         transform: scale(0.98) !important;

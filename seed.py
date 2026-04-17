@@ -1,3 +1,4 @@
+# do not run this file
 import sqlite3
 from config import DATABASE_PATH
 from faker import Faker

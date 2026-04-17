@@ -1,3 +1,5 @@
+#run this file only once then delet
+
 import bcrypt  
 from models import get_db_connection  
   
