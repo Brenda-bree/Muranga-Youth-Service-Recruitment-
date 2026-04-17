@@ -82,3 +82,61 @@ def delete_user_by_id(user_id):
     conn.commit()
     conn.close()
     return affected > 0
+
+
+def get_all_recruitees(limit=100):
+    """Fetch all recruitees (for admin listing)"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id_number, name, gender, size, phone_number, cohort_number FROM recruitees ORDER BY cohort_number, name LIMIT ?", (limit,))
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+def get_recruitee_by_id(id_number):
+    """Fetch a single recruitee by ID"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM recruitees WHERE id_number = ?", (id_number,))
+    row = cursor.fetchone()
+    conn.close()
+    return row
+
+def add_recruitee(id_number, name, gender, size, phone_number, cohort_number):
+    """Add a new recruitee"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "INSERT INTO recruitees (id_number, name, gender, size, phone_number, cohort_number) VALUES (?, ?, ?, ?, ?, ?)",
+            (id_number, name, gender, size, phone_number, cohort_number)
+        )
+        conn.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
+    finally:
+        conn.close()
+
+def update_recruitee(id_number, name, gender, size, phone_number, cohort_number):
+    """Update an existing recruitee"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE recruitees SET name = ?, gender = ?, size = ?, phone_number = ?, cohort_number = ? WHERE id_number = ?",
+        (name, gender, size, phone_number, cohort_number, id_number)
+    )
+    affected = cursor.rowcount
+    conn.commit()
+    conn.close()
+    return affected > 0
+
+def delete_recruitee(id_number):
+    """Delete a recruitee by ID"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM recruitees WHERE id_number = ?", (id_number,))
+    affected = cursor.rowcount
+    conn.commit()
+    conn.close()
+    return affected > 0

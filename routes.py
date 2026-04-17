@@ -199,3 +199,79 @@ def register_routes(app):
             flash(f'❌ User not found or could not be deleted.', 'error')
         
         return redirect(url_for('admin_staff'))
+
+    @app.route('/admin/database')
+    @admin_required
+    def admin_database():
+        from models import get_all_recruitees
+        recruitees = get_all_recruitees()
+        return render_template('admin_database.html', recruitees=recruitees)
+
+    @app.route('/admin/database/add', methods=['GET', 'POST'])
+    @admin_required
+    def admin_add_recruitee():
+        if request.method == 'POST':
+            id_number = request.form.get('id_number', '').strip()
+            name = request.form.get('name', '').strip()
+            gender = request.form.get('gender', '')
+            size = request.form.get('size', '')
+            phone = request.form.get('phone', '').strip()
+            cohort = request.form.get('cohort', '').strip()
+            
+            # Basic validation
+            if not id_number or not name or not cohort:
+                flash('ID Number, Name, and Cohort are required.', 'error')
+                return redirect(url_for('admin_add_recruitee'))
+            if len(id_number) != 9 or not id_number.isdigit():
+                flash('ID Number must be exactly 9 digits.', 'error')
+                return redirect(url_for('admin_add_recruitee'))
+            
+            from models import add_recruitee
+            success = add_recruitee(id_number, name, gender, size, phone, cohort)
+            if success:
+                flash(f'Recruitee {name} added successfully.', 'success')
+                return redirect(url_for('admin_database'))
+            else:
+                flash(f'ID Number {id_number} already exists.', 'error')
+                return redirect(url_for('admin_add_recruitee'))
+        
+        return render_template('admin_database_form.html', action='Add', recruitee=None)
+
+    @app.route('/admin/database/edit/<id_number>', methods=['GET', 'POST'])
+    @admin_required
+    def admin_edit_recruitee(id_number):
+        from models import get_recruitee_by_id, update_recruitee
+        if request.method == 'POST':
+            name = request.form.get('name', '').strip()
+            gender = request.form.get('gender', '')
+            size = request.form.get('size', '')
+            phone = request.form.get('phone', '').strip()
+            cohort = request.form.get('cohort', '').strip()
+            
+            if not name or not cohort:
+                flash('Name and Cohort are required.', 'error')
+                return redirect(url_for('admin_edit_recruitee', id_number=id_number))
+            
+            success = update_recruitee(id_number, name, gender, size, phone, cohort)
+            if success:
+                flash(f'Recruitee {name} updated successfully.', 'success')
+                return redirect(url_for('admin_database'))
+            else:
+                flash('Update failed.', 'error')
+                return redirect(url_for('admin_edit_recruitee', id_number=id_number))
+        
+        recruitee = get_recruitee_by_id(id_number)
+        if not recruitee:
+            flash('Recruitee not found.', 'error')
+            return redirect(url_for('admin_database'))
+        return render_template('admin_database_form.html', action='Edit', recruitee=recruitee)
+
+    @app.route('/admin/database/delete/<id_number>')
+    @admin_required
+    def admin_delete_recruitee(id_number):
+        from models import delete_recruitee
+        if delete_recruitee(id_number):
+            flash('Recruitee deleted successfully.', 'success')
+        else:
+            flash('Recruitee not found.', 'error')
+        return redirect(url_for('admin_database'))
