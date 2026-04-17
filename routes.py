@@ -183,15 +183,19 @@ def register_routes(app):
     @app.route('/admin/staff/delete/<int:user_id>')
     @admin_required
     def admin_delete_user(user_id):
+        # onvert to int and compare
+        current_user_id = int(current_user.id)
+        target_user_id = int(user_id)
+        
         # Prevent admin from deleting themselves
-        if user_id == current_user.id:
-            flash('You cannot delete your own account.', 'error')
+        if target_user_id == current_user_id:
+            flash('❌ You cannot delete your own account. This action has been blocked.', 'error')
             return redirect(url_for('admin_staff'))
         
         from models import delete_user_by_id
-        if delete_user_by_id(user_id):
-            flash('User deleted successfully.', 'success')
+        if delete_user_by_id(target_user_id):
+            flash(f'✅ User deleted successfully.', 'success')
         else:
-            flash('User not found.', 'error')
+            flash(f'❌ User not found or could not be deleted.', 'error')
         
         return redirect(url_for('admin_staff'))
