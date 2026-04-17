@@ -275,3 +275,19 @@ def register_routes(app):
         else:
             flash('Recruitee not found.', 'error')
         return redirect(url_for('admin_database'))
+
+    @app.route('/profile')
+    @login_required
+    def profile():
+        from models import get_user_by_id
+        user = get_user_by_id(current_user.id)
+        return render_template('profile.html', user=user)
+
+    def get_user_by_id(user_id):
+    """Fetch a user by ID (excludes password)"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, username, role, created_at FROM users WHERE id = ?", (user_id,))
+    user = cursor.fetchone()
+    conn.close()
+    return user
