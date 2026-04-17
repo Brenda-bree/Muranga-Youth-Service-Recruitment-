@@ -8,351 +8,170 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+<div class="main-content" id="mainContent">
 
-{% if current_user.is_authenticated and current_user.is_admin %}
-    <div class="admin-sidebar" id="adminSidebar">
-        <div class="sidebar-header">
-            <h3>Admin Panel</h3>
-            <button class="close-sidebar" id="closeSidebar">&times;</button>
+    {% if current_user.is_authenticated and current_user.is_admin %}
+    <!-- Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+<!-- Sidebar -->
+<div class="admin-sidebar" id="adminSidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-brand">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="sidebar-logo">
+            <span>Admin Portal</span>
         </div>
-        <ul class="sidebar-nav">
-            <li><a href="/admin/database"><i class="fas fa-database"></i> Update Database</a></li>
-            <li><a href="/admin/staff"><i class="fas fa-users"></i> Update Staff</a></li>
-        </ul>
+        <button class="close-sidebar" id="closeSidebar">&times;</button>
     </div>
+    <ul class="sidebar-nav">
+        <li><a href="/admin/database"><i class="fas fa-database"></i> Update Database</a></li>
+        <li><a href="/admin/staff"><i class="fas fa-users"></i> Update Staff</a></li>
+    </ul>
+</div>
+
     <button class="open-sidebar" id="openSidebar"><i class="fas fa-bars"></i></button>
-{% endif %}
-    <!-- Shard animation overlay -->
-    <div class="shard-overlay">
-        <div class="shard shard-1"></div>
-        <div class="shard shard-2"></div>
-        <div class="shard shard-3"></div>
-        <div class="shard shard-4"></div>
-    </div>
+    {% endif %}
+        <!-- Shard animation overlay -->
+        <div class="shard-overlay">
+            <div class="shard shard-1"></div>
+            <div class="shard shard-2"></div>
+            <div class="shard shard-3"></div>
+            <div class="shard shard-4"></div>
+        </div>
 
-    <!-- Sticky Header -->
-    <header class="sleek-header">
-        <div class="header-container">
-            <div class="logo-area">
-                <div class="logo-icon">
-                    <img src="/static/images/logo.png" alt="Muranga County Logo" class="logo-img">
-                </div>
-                <div class="logo-text">
-                    <span class="logo-title">Muranga Youth Service</span>
-                    <span class="logo-subtitle">Recruitment Verification Portal</span>
-                </div>
+        <!-- Sticky Header -->
+        <<!-- Sticky Header -->
+<header class="sleek-header">
+    <div class="header-container">
+        {% if current_user.is_authenticated and current_user.is_admin %}
+        <!-- Hamburger button now inside header, leftmost -->
+        <button class="open-sidebar" id="openSidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+        {% endif %}
+        <div class="logo-area">
+            <div class="logo-icon">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Muranga County Logo" class="logo-img">
             </div>
-            <div class="user-area">
-                <div class="user-profile" id="userProfile">
-                    <i class="fas fa-user-circle"></i>
-                    <span class="user-name">Staff</span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="dropdown-menu" id="dropdownMenu">
-                    <a href="#"><i class="fas fa-user"></i> Profile</a>
-                    <a href="#"><i class="fas fa-cog"></i> Settings</a>
-                    <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                </div>
+            <div class="logo-text">
+                <span class="logo-title">Muranga Youth Service</span>
+                <span class="logo-subtitle">Recruitment Verification Portal</span>
             </div>
         </div>
-    </header>
+        <div class="user-area">
+            <div class="user-profile" id="userProfile">
+                <i class="fas fa-user-circle"></i>
+                <span class="user-name">Staff</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="#"><i class="fas fa-user"></i> Profile</a>
+                <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </div>
+</header>
 
-    <!-- Main Content -->
-    <div class="main-wrapper">
-        <div class="container">
-            <h1>Verification System</h1>
-            <p>Enter ID Number or Name to check if applicant has been recruited before</p>
-            
-            <form action="/verify" method="POST">
-                <!-- Search Toggle -->
-                <div class="search-toggle">
-                    <label class="toggle-option">
-                        <input type="radio" name="search_type" value="id" checked> 
-                        <span>ID Number</span>
-                    </label>
-                    <label class="toggle-option">
-                        <input type="radio" name="search_type" value="name"> 
-                        <span>Name</span>
-                    </label>
-                </div>
+        <!-- Main Content -->
+        <div class="main-wrapper">
+            <div class="container">
+                <h1>Verification System</h1>
+                <p>Enter ID Number or Name to check if applicant has been recruited before</p>
+                
+                <form action="/verify" method="POST">
+                    <!-- Search Toggle -->
+                    <div class="search-toggle">
+                        <label class="toggle-option">
+                            <input type="radio" name="search_type" value="id" checked> 
+                            <span>ID Number</span>
+                        </label>
+                        <label class="toggle-option">
+                            <input type="radio" name="search_type" value="name"> 
+                            <span>Name</span>
+                        </label>
+                    </div>
 
-                <!-- Search input field -->
-                <input type="text" name="id_number" id="searchInput" placeholder="Enter ID Number (9 digits)" required>
+                    <!-- Search input field -->
+                    <input type="text" name="id_number" id="searchInput" placeholder="Enter ID Number (9 digits)" required>
 
-                <!-- Suggestions and spinner -->
-                <div id="nameSuggestions" class="suggestions-list"></div>
-                <div id="searchSpinner" class="search-spinner" style="display: none;">
-                    <div class="spinner"></div>
-                </div>
+                    <!-- Suggestions and spinner -->
+                    <div id="nameSuggestions" class="suggestions-list"></div>
+                    <div id="searchSpinner" class="search-spinner" style="display: none;">
+                        <div class="spinner"></div>
+                    </div>
 
-                <button type="submit">Verify</button>
-            </form>
+                    <button type="submit">Verify</button>
+                </form>
 
-            {% if result %}
-                <div class="result {{ result.status }}">
-                    <h2>{{ result.status }}</h2>
-                    <p>{{ result.message }}</p>
-                    
-                    {% if result.status == 'REJECTED' and result.details %}
-                        <div class="details-card">
-                            <h3>Registered Applicant Details</h3>
-                            <div class="details-grid">
-                                <div class="detail-item">
-                                    <span class="detail-label">Full Name:</span>
-                                    <span class="detail-value">{{ result.details.name }}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Gender:</span>
-                                    <span class="detail-value">{{ result.details.gender }}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Size:</span>
-                                    <span class="detail-value">{{ result.details.size }}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Phone Number:</span>
-                                    <span class="detail-value">{{ result.details.phone }}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Cohort:</span>
-                                    <span class="detail-value">Cohort {{ result.details.cohort }}</span>
+                {% if result %}
+                    <div class="result {{ result.status }}">
+                        <h2>{{ result.status }}</h2>
+                        <p>{{ result.message }}</p>
+                        
+                        {% if result.status == 'REJECTED' and result.details %}
+                            <div class="details-card">
+                                <h3>Registered Applicant Details</h3>
+                                <div class="details-grid">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Full Name:</span>
+                                        <span class="detail-value">{{ result.details.name }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Gender:</span>
+                                        <span class="detail-value">{{ result.details.gender }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Size:</span>
+                                        <span class="detail-value">{{ result.details.size }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Phone Number:</span>
+                                        <span class="detail-value">{{ result.details.phone }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Cohort:</span>
+                                        <span class="detail-value">Cohort {{ result.details.cohort }}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endif %}
-                </div>
-            {% endif %}
-        </div>
-    </div>
-
-    <script>
-        // Remove shard overlay after animation
-        window.addEventListener('load', () => {
-            const overlay = document.querySelector('.shard-overlay');
-            setTimeout(() => {
-                overlay.style.opacity = '0';
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 600);
-            }, 800);
-        });
-
-        // Scroll shrink header
-        const header = document.querySelector('.sleek-header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('shrink');
-            } else {
-                header.classList.remove('shrink');
-            }
-        });
-
-        // Dropdown toggle
-        const profile = document.getElementById('userProfile');
-        const dropdown = document.getElementById('dropdownMenu');
-        if (profile && dropdown) {
-            profile.addEventListener('click', () => {
-                dropdown.classList.toggle('show');
-            });
-            window.addEventListener('click', (e) => {
-                if (!profile.contains(e.target)) {
-                    dropdown.classList.remove('show');
-                }
-            });
-        }
-    </script>
-
-   <script>
-        // Live name search with AJAX + Keyboard Navigation
-        const searchInput = document.getElementById('searchInput');
-        const suggestionsDiv = document.getElementById('nameSuggestions');
-        let currentSearchType = 'id';
-        let debounceTimer;
-        let selectedIndex = -1;
-        let currentSuggestions = [];
-
-        // Update when toggle changes
-        document.querySelectorAll('input[name="search_type"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                currentSearchType = this.value;
-                suggestionsDiv.innerHTML = '';
-                selectedIndex = -1;
-                currentSuggestions = [];
-                const spinner = document.getElementById('searchSpinner');
-                if (spinner) spinner.style.display = 'none';
-                
-                if (currentSearchType === 'name') {
-                    searchInput.placeholder = 'Enter name (min 2 chars)';
-                    searchInput.maxLength = 100;
-                    searchInput.removeAttribute('pattern');
-                } else {
-                    searchInput.placeholder = 'Enter ID Number (9 digits)';
-                    searchInput.maxLength = 9;
-                    searchInput.pattern = '\\d{9}';
-                }
-            });
-        });
-
-        // Keyboard navigation
-        searchInput.addEventListener('keydown', function(e) {
-            if (currentSearchType !== 'name') return;
-            const items = document.querySelectorAll('.suggestion-item:not(.no-results)');
-            if (items.length === 0) return;
-
-            if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
-                updateHighlight(items);
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                selectedIndex = Math.max(selectedIndex - 1, -1);
-                updateHighlight(items);
-            } else if (e.key === 'Enter' && selectedIndex >= 0) {
-                e.preventDefault();
-                const selected = items[selectedIndex];
-                if (selected) {
-                    const details = {
-                        name: selected.dataset.name,
-                        gender: selected.dataset.gender,
-                        size: selected.dataset.size,
-                        phone: selected.dataset.phone,
-                        cohort: selected.dataset.cohort
-                    };
-                    showRejectionCard(details);
-                    searchInput.value = '';
-                    suggestionsDiv.innerHTML = '';
-                    selectedIndex = -1;
-                    currentSuggestions = [];
-                    const spinner = document.getElementById('searchSpinner');
-                    if (spinner) spinner.style.display = 'none';
-                }
-            } else if (e.key === 'Escape') {
-                suggestionsDiv.innerHTML = '';
-                selectedIndex = -1;
-                currentSuggestions = [];
-            }
-        });
-
-        function updateHighlight(items) {
-            items.forEach((item, idx) => {
-                if (idx === selectedIndex) {
-                    item.style.background = 'rgba(78, 205, 196, 0.4)';
-                    item.scrollIntoView({ block: 'nearest' });
-                } else {
-                    item.style.background = '';
-                }
-            });
-        }
-
-        // Input handler with debounce
-        searchInput.addEventListener('input', function() {
-            if (currentSearchType !== 'name') {
-                suggestionsDiv.innerHTML = '';
-                selectedIndex = -1;
-                currentSuggestions = [];
-                const spinner = document.getElementById('searchSpinner');
-                if (spinner) spinner.style.display = 'none';
-                return;
-            }
-            
-            const query = this.value.trim();
-            if (query.length < 2) {
-                suggestionsDiv.innerHTML = '';
-                selectedIndex = -1;
-                currentSuggestions = [];
-                const spinner = document.getElementById('searchSpinner');
-                if (spinner) spinner.style.display = 'none';
-                return;
-            }
-            
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => {
-                const spinner = document.getElementById('searchSpinner');
-                if (spinner) spinner.style.display = 'flex';
-                suggestionsDiv.innerHTML = '';
-                selectedIndex = -1;
-                currentSuggestions = [];
-                
-                fetch(`/search/names?q=${encodeURIComponent(query)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (spinner) spinner.style.display = 'none';
-                        if (data.length === 0) {
-                            suggestionsDiv.innerHTML = '<div class="suggestion-item no-results">No matches found</div>';
-                            return;
-                        }
-                        currentSuggestions = data;
-                        let html = '';
-                        data.forEach(person => {
-                            html += `<div class="suggestion-item" data-id="${person.id_number}" data-name="${person.name}" data-gender="${person.gender}" data-size="${person.size}" data-phone="${person.phone_number}" data-cohort="${person.cohort_number}">
-                                        <strong>${escapeHtml(person.name)}</strong> (ID: ${person.id_number}) - Cohort ${person.cohort_number}
-                                    </div>`;
-                        });
-                        suggestionsDiv.innerHTML = html;
-                        
-                        // Add click handlers to suggestions
-                        document.querySelectorAll('.suggestion-item').forEach(item => {
-                            item.addEventListener('click', function() {
-                                const details = {
-                                    name: this.dataset.name,
-                                    gender: this.dataset.gender,
-                                    size: this.dataset.size,
-                                    phone: this.dataset.phone,
-                                    cohort: this.dataset.cohort
-                                };
-                                showRejectionCard(details);
-                                searchInput.value = '';
-                                suggestionsDiv.innerHTML = '';
-                                selectedIndex = -1;
-                                currentSuggestions = [];
-                                const spinner = document.getElementById('searchSpinner');
-                                if (spinner) spinner.style.display = 'none';
-                            });
-                        });
-                    })
-                    .catch(error => {
-                        if (spinner) spinner.style.display = 'none';
-                        suggestionsDiv.innerHTML = '<div class="suggestion-item no-results">Error loading suggestions</div>';
-                        console.error('Search error:', error);
-                    });
-            }, 300);
-        });
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-        }
-
-        function showRejectionCard(details) {
-            const container = document.querySelector('.container');
-            let resultDiv = container.querySelector('.result');
-            if (!resultDiv) {
-                resultDiv = document.createElement('div');
-                container.appendChild(resultDiv);
-            }
-            resultDiv.className = 'result REJECTED';
-            resultDiv.innerHTML = `
-                <h2>REJECTED</h2>
-                <p>${escapeHtml(details.name)} is already in Cohort ${escapeHtml(details.cohort)}.</p>
-                <div class="details-card">
-                    <h3>Registered Applicant Details</h3>
-                    <div class="details-grid">
-                        <div class="detail-item"><span class="detail-label">Full Name:</span><span class="detail-value">${escapeHtml(details.name)}</span></div>
-                        <div class="detail-item"><span class="detail-label">Gender:</span><span class="detail-value">${escapeHtml(details.gender)}</span></div>
-                        <div class="detail-item"><span class="detail-label">Size:</span><span class="detail-value">${escapeHtml(details.size)}</span></div>
-                        <div class="detail-item"><span class="detail-label">Phone Number:</span><span class="detail-value">${escapeHtml(details.phone)}</span></div>
-                        <div class="detail-item"><span class="detail-label">Cohort:</span><span class="detail-value">Cohort ${escapeHtml(details.cohort)}</span></div>
+                        {% endif %}
                     </div>
-                </div>
-            `;
-            // Scroll to result
-            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-</script>
+                {% endif %}
+            </div>
+        </div>
+
+
+
+<style>
+    /* Force header hamburger button to be visible and functional */
+    .sleek-header .open-sidebar {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        background: rgba(255,255,255,0.2) !important;
+        width: 42px !important;
+        height: 42px !important;
+        border-radius: 12px !important;
+        margin-right: 12px !important;
+        z-index: 1002 !important;
+        pointer-events: auto !important;
+        color: black !important;
+    }
+    
+    .open-sidebar:not(.sleek-header .open-sidebar) {
+        display: none !important;
+    }
+    
+    .admin-sidebar {
+        z-index: 9999 !important;
+    }
+    .sidebar-overlay {
+        z-index: 9998 !important;
+    }
+</style>
+<script src="/static/js/index.js"></script>
 </body>
 </html>
